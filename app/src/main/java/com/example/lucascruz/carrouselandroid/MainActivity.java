@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -19,11 +20,12 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Map<String,ImageView> itensMap;
+    private Map<Integer,ImageView> itensMap;
     private ImageView itemSelected;
 
     private ImageView imgSelected;
     private TextView txtSelected;
+    private HorizontalScrollView pickerScroll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +36,16 @@ public class MainActivity extends AppCompatActivity {
         imgSelected = (ImageView) findViewById(R.id.img_selected);
         txtSelected = (TextView) findViewById(R.id.txt_selected);
 
+        pickerScroll = (HorizontalScrollView) findViewById(R.id.pickerScroll);
+
 
         final List<Item> itens = createItemList();
 
         itensMap = new HashMap<>();
-
+        int x = 0;
         for (final Item it : itens) {
-            LinearLayout ll = new LinearLayout(getApplicationContext());
+            final int index = x;
+            final LinearLayout ll = new LinearLayout(getApplicationContext());
             LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(400, LinearLayout.LayoutParams.WRAP_CONTENT);
             ll.setLayoutParams(llParams);
             ll.setPadding(50,50,50,50);
@@ -70,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             sel.setAdjustViewBounds(true);
             sel.setImageResource(R.drawable.ic_selected);
             sel.setVisibility(View.GONE);
-            itensMap.put(it.txt,sel);
+            itensMap.put(x,sel);
 
             ll.addView(sel);
 
@@ -80,19 +85,29 @@ public class MainActivity extends AppCompatActivity {
                     if(itemSelected != null){
                         itemSelected.setVisibility(View.GONE);
                     }
-                    itemSelected = itensMap.get(it.txt);
+                    itemSelected = itensMap.get(index);
                     itemSelected.setVisibility(View.VISIBLE);
 
                     imgSelected.setImageResource(it.imgResourceID);
                     txtSelected.setText(it.txt);
+
+                    int scroll = (ll.getLeft() - (getWindowManager().getDefaultDisplay().getWidth()/ 2)) + (ll.getWidth() / 2);
+                    pickerScroll.smoothScrollTo(scroll,0);
                 }
             });
             picker.addView(ll);
+            x++;
         }
     }
 
     private List<Item> createItemList(){
         List<Item> itens = new ArrayList<>();
+        itens.add(new Item(R.drawable.ic_tea,"Green Tea"));
+        itens.add(new Item(R.drawable.ic_sandwich,"Sandwich"));
+        itens.add(new Item(R.drawable.ic_cheese,"Cheese"));
+        itens.add(new Item(R.drawable.ic_tea,"Green Tea"));
+        itens.add(new Item(R.drawable.ic_sandwich,"Sandwich"));
+        itens.add(new Item(R.drawable.ic_cheese,"Cheese"));
         itens.add(new Item(R.drawable.ic_tea,"Green Tea"));
         itens.add(new Item(R.drawable.ic_sandwich,"Sandwich"));
         itens.add(new Item(R.drawable.ic_cheese,"Cheese"));
