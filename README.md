@@ -4,11 +4,11 @@
 
 This is a library to help any Android developer to create a Carousel with a list of images and descriptions.
 
-<img src="https://raw.githubusercontent.com/lucas-asu/carousel-picker-android/master/img/sample.png" height="300">
-<img src="https://raw.githubusercontent.com/lucas-asu/carousel-picker-android/master/gif/picker01.gif" height="300">
-<img src="https://raw.githubusercontent.com/lucas-asu/carousel-picker-android/master/gif/picker02.gif" height="300">
-<img src="https://raw.githubusercontent.com/lucas-asu/carousel-picker-android/master/gif/picker03.gif" height="300">
-<img src="https://raw.githubusercontent.com/lucas-asu/carousel-picker-android/master/gif/picker04.gif" height="300">
+<img src="https://raw.githubusercontent.com/lucas-asu/carousel-picker-android/master/img/sample.png" height="300"><img src="https://raw.githubusercontent.com/lucas-asu/carousel-picker-android/master/gif/picker01.gif" height="300"><img src="https://raw.githubusercontent.com/lucas-asu/carousel-picker-android/master/gif/picker02.gif" height="300"><img src="https://raw.githubusercontent.com/lucas-asu/carousel-picker-android/master/gif/picker03.gif" height="300"><img src="https://raw.githubusercontent.com/lucas-asu/carousel-picker-android/master/gif/picker04.gif" height="300">
+
+
+
+
 
 ## Gradle Dependency
 
