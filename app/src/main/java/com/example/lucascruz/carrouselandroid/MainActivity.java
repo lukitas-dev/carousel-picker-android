@@ -2,7 +2,6 @@ package com.example.lucascruz.carrouselandroid;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.annotation.ColorRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -10,11 +9,12 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.lcruz.carouselpicker.CarouselPicker;
+import com.lcruz.carouselpicker.ItemPicker;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,22 +26,47 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imgSelected;
     private TextView txtSelected;
     private HorizontalScrollView pickerScroll;
+    private LinearLayout picker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LinearLayout picker = (LinearLayout) findViewById(R.id.pickerView);
         imgSelected = (ImageView) findViewById(R.id.img_selected);
         txtSelected = (TextView) findViewById(R.id.txt_selected);
 
-        pickerScroll = (HorizontalScrollView) findViewById(R.id.pickerScroll);
+        List<ItemPicker> itens = new ArrayList<>();
+        itens.add(new ItemPicker(R.drawable.ic_tea,"Green Tea"));
+        itens.add(new ItemPicker(R.drawable.ic_sandwich,"Sandwich"));
+        itens.add(new ItemPicker(R.drawable.ic_cheese,"Cheese"));
+        itens.add(new ItemPicker(R.drawable.ic_tea,"Green Tea"));
+        itens.add(new ItemPicker(R.drawable.ic_sandwich,"Sandwich"));
+        itens.add(new ItemPicker(R.drawable.ic_cheese,"Cheese"));
 
+        final CarouselPicker carouselPicker = (CarouselPicker) findViewById(R.id.carousel_picker);
 
+        carouselPicker.addList(itens).build(this);
+
+        carouselPicker.addListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ItemPicker item = carouselPicker.getSelectedItem();
+                if(item != null){
+                    imgSelected.setImageResource(item.imgResID);
+                    if(item.txtResID != 0) {
+                        txtSelected.setText(item.txtResID);
+                    } else {
+                        txtSelected.setText(item.txt);
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void buildPicker(){
         final List<Item> itens = createItemList();
-
-        itensMap = new HashMap<>();
         int x = 0;
         for (final Item it : itens) {
             final int index = x;
@@ -73,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             selParams.gravity = Gravity.CENTER_HORIZONTAL;
             sel.setLayoutParams(selParams);
             sel.setAdjustViewBounds(true);
-            sel.setImageResource(R.drawable.ic_selected);
+            sel.setImageResource(R.drawable.ic_indicator);
             sel.setVisibility(View.GONE);
             itensMap.put(x,sel);
 

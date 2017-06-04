@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CarouselPicker">
+        <attr name="displayIndicator" format="boolean" />
+        <attr name="customIndicator" format="reference"  />
+        <attr name="customIndicatorColor" format="reference" />
+        <attr name="customIndicatorSize" format="reference" />
+    </declare-styleable>
+</resources>
