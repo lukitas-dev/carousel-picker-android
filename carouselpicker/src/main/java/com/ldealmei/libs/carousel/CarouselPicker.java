@@ -42,6 +42,7 @@ public class CarouselPicker extends ViewGroup {
     private int customIndicatorSize;
     private int customDescriptionColor;
     private List<ItemPicker> itens;
+    private int numberOfItensPerPage = 3;
 
 
     public CarouselPicker(Context context) {
@@ -104,6 +105,10 @@ public class CarouselPicker extends ViewGroup {
         }
     }
 
+    public CarouselPicker itensByPage(int number){
+        this.numberOfItensPerPage = number;
+        return this;
+    }
 
     public CarouselPicker displayIndicator(boolean display){
         this.displayIndicator = display;
@@ -154,7 +159,7 @@ public class CarouselPicker extends ViewGroup {
             Point size = new Point();
             display.getSize(size);
             final LinearLayout sll = new LinearLayout(context);
-            LinearLayout.LayoutParams sllParams = new LinearLayout.LayoutParams(size.x/3, getLayoutParams().height);
+            LinearLayout.LayoutParams sllParams = new LinearLayout.LayoutParams(size.x/numberOfItensPerPage, getLayoutParams().height);
             sll.setLayoutParams(sllParams);
             sll.setPadding(25,0,25,0);
             sll.setOrientation(LinearLayout.VERTICAL);
@@ -165,45 +170,55 @@ public class CarouselPicker extends ViewGroup {
             ll.setOrientation(LinearLayout.VERTICAL);
 
             ImageView img = new ImageView(context);
-            LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, getLayoutParams().height/2);
+            int imgHeigth = LinearLayout.LayoutParams.WRAP_CONTENT;
+            if(it.hasDescription || displayIndicator) {
+                imgHeigth = getLayoutParams().height/2;
+            }
+            LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, imgHeigth);
             imgParams.gravity = Gravity.TOP;
+            imgParams.setMargins(0, 0, 0, 25);
             img.setLayoutParams(imgParams);
             img.setAdjustViewBounds(true);
             img.setImageResource(it.imgResID);
             ll.addView(img);
 
-            TextView txt = new TextView(context);
-            LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            txtParams.gravity = Gravity.TOP;
-            txtParams.setMargins(0,25,0,0);
-            txt.setLayoutParams(txtParams);
-            if(customDescriptionColor != 0){
-                txt.setTextColor(ContextCompat.getColor(context, customDescriptionColor));
+            if(it.hasDescription) {
+                TextView txt = new TextView(context);
+                LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                txtParams.gravity = Gravity.TOP;
+                txt.setLayoutParams(txtParams);
+                if (customDescriptionColor != 0) {
+                    txt.setTextColor(ContextCompat.getColor(context, customDescriptionColor));
+                }
+                txt.setTypeface(Typeface.DEFAULT_BOLD);
+                txt.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                if (it.txt == null) {
+                    txt.setText(it.txtResID);
+                } else {
+                    txt.setText(it.txt);
+                }
+                ll.addView(txt);
             }
-            txt.setTypeface(Typeface.DEFAULT_BOLD);
-            txt.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            if(it.txt == null) {
-                txt.setText(it.txtResID);
-            } else {
-                txt.setText(it.txt);
-            }
-            ll.addView(txt);
 
             sll.addView(ll);
 
-            if(displayIndicator && customIndicator != 0) {
+            if(displayIndicator) {
                 ImageView sel = new ImageView(context);
                 LinearLayout.LayoutParams selParams;
                 if(customIndicatorSize != 0){
                     selParams = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT,(int)context.getResources().getDimension(customIndicatorSize), 0.5f);
                 } else {
-                    selParams = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,0.2f);
+                    selParams = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT,(int)context.getResources().getDimension(R.dimen.indicator_default_size),0.2f);
                 }
                 selParams.gravity = (Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
                 sel.setLayoutParams(selParams);
                 sel.setScaleType(ImageView.ScaleType.FIT_XY);
                 sel.setAdjustViewBounds(true);
-                sel.setImageResource(customIndicator);
+                if(customIndicator != 0) {
+                    sel.setImageResource(customIndicator);
+                } else {
+                    sel.setImageResource(R.drawable.ic_indicator);
+                }
                 if(customIndicatorColor != 0) {
                     sel.setColorFilter(ContextCompat.getColor(context, customIndicatorColor));
                 }
