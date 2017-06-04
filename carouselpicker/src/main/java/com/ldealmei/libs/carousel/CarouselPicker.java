@@ -156,7 +156,7 @@ public class CarouselPicker extends ViewGroup {
             final LinearLayout sll = new LinearLayout(context);
             LinearLayout.LayoutParams sllParams = new LinearLayout.LayoutParams(size.x/3, getLayoutParams().height);
             sll.setLayoutParams(sllParams);
-            sll.setPadding(50,50,50,0);
+            sll.setPadding(25,0,25,0);
             sll.setOrientation(LinearLayout.VERTICAL);
 
             LinearLayout ll = new LinearLayout(context);
@@ -175,7 +175,7 @@ public class CarouselPicker extends ViewGroup {
             TextView txt = new TextView(context);
             LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
             txtParams.gravity = Gravity.TOP;
-            txtParams.setMargins(0,50,0,0);
+            txtParams.setMargins(0,25,0,0);
             txt.setLayoutParams(txtParams);
             if(customDescriptionColor != 0){
                 txt.setTextColor(ContextCompat.getColor(context, customDescriptionColor));
@@ -191,27 +191,21 @@ public class CarouselPicker extends ViewGroup {
 
             sll.addView(ll);
 
-            if(displayIndicator) {
+            if(displayIndicator && customIndicator != 0) {
                 ImageView sel = new ImageView(context);
                 LinearLayout.LayoutParams selParams;
                 if(customIndicatorSize != 0){
-                    selParams = new LinearLayout.LayoutParams((int)context.getResources().getDimension(customIndicatorSize), LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                    selParams = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT,(int)context.getResources().getDimension(customIndicatorSize), 0.5f);
                 } else {
-                    selParams = new LinearLayout.LayoutParams((int)context.getResources().getDimension(R.dimen.indicator_default_size),(int)context.getResources().getDimension(R.dimen.indicator_default_size),1f);
+                    selParams = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,0.2f);
                 }
                 selParams.gravity = (Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
                 sel.setLayoutParams(selParams);
                 sel.setScaleType(ImageView.ScaleType.FIT_XY);
                 sel.setAdjustViewBounds(true);
-                if(customIndicator != 0) {
-                    sel.setImageResource(customIndicator);
-                } else {
-                    sel.setImageResource(R.drawable.ic_indicator);
-                }
+                sel.setImageResource(customIndicator);
                 if(customIndicatorColor != 0) {
                     sel.setColorFilter(ContextCompat.getColor(context, customIndicatorColor));
-                } else {
-                    sel.setColorFilter(ContextCompat.getColor(context, R.color.indicator_color_default));
                 }
                 if(x == 0){
                     indicatorSelected = sel;

@@ -6,4 +6,7 @@
 
     <color name="background">#635d5d</color>
     <color name="background2">#f2ebeb</color>
+
+    <color name="indicator_color">@color/background</color>
+    <color name="description_color">@color/background</color>
 </resources>
