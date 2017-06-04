@@ -1,4 +1,4 @@
-package com.lcruz.carouselpicker;
+package com.ldealmei.libs.carousel;
 
 /**
  * Created by Lucas Cruz on 27/05/2017.

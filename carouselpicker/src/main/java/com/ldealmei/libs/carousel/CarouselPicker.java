@@ -1,15 +1,12 @@
-package com.lcruz.carouselpicker;
+package com.ldealmei.libs.carousel;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -19,6 +16,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +40,7 @@ public class CarouselPicker extends ViewGroup {
     private int customIndicator;
     private int customIndicatorColor;
     private int customIndicatorSize;
+    private int customDescriptionColor;
     private List<ItemPicker> itens;
 
 
@@ -66,6 +65,7 @@ public class CarouselPicker extends ViewGroup {
         displayIndicator = typedArray.getBoolean(R.styleable.CarouselPicker_displayIndicator,false);
         customIndicatorColor = typedArray.getResourceId(R.styleable.CarouselPicker_customIndicatorColor,0);
         customIndicatorSize = typedArray.getResourceId(R.styleable.CarouselPicker_customIndicatorSize,0);
+        customDescriptionColor = typedArray.getResourceId(R.styleable.CarouselPicker_customDescriptionColor,0);
     }
 
     @Override
@@ -116,6 +116,11 @@ public class CarouselPicker extends ViewGroup {
     }
     public CarouselPicker customIndicatorColor(int colorRes){
         this.customIndicatorColor = colorRes;
+        return this;
+    }
+
+    public CarouselPicker customDescriptionColor(int colorRes){
+        this.customDescriptionColor = colorRes;
         return this;
     }
 
@@ -170,8 +175,11 @@ public class CarouselPicker extends ViewGroup {
             TextView txt = new TextView(context);
             LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
             txtParams.gravity = Gravity.TOP;
+            txtParams.setMargins(0,50,0,0);
             txt.setLayoutParams(txtParams);
-            txt.setTextColor(Color.WHITE);
+            if(customDescriptionColor != 0){
+                txt.setTextColor(ContextCompat.getColor(context, customDescriptionColor));
+            }
             txt.setTypeface(Typeface.DEFAULT_BOLD);
             txt.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             if(it.txt == null) {
