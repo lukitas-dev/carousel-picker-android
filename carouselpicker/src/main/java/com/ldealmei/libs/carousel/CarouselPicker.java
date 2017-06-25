@@ -1,31 +1,15 @@
 package com.ldealmei.libs.carousel;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.Display;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 
 import com.ldealmei.libs.carousel.builder.CarouselBuilder;
+import com.ldealmei.libs.carousel.interfaces.PickerListerner;
 import com.ldealmei.libs.carousel.model.ItemPicker;
-import com.ldealmei.libs.carousel.callback.CallbackPicker;
-import com.ldealmei.libs.carousel.view.CarouselView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Lucas Cruz on 27/05/2017.
@@ -81,7 +65,7 @@ public class CarouselPicker extends CarouselBuilder {
         return this;
     }
 
-    public CarouselPicker addCallback(@NonNull CallbackPicker callback){
+    public CarouselPicker addCallback(@NonNull PickerListerner callback){
         this.callback = callback;
         return this;
     }

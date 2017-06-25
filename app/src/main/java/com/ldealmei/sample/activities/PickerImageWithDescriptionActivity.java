@@ -1,19 +1,20 @@
-package com.ldealmei.sample;
+package com.ldealmei.sample.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ldealmei.libs.carousel.callback.CallbackPicker;
 import com.ldealmei.libs.carousel.CarouselPicker;
+import com.ldealmei.libs.carousel.interfaces.PickerListerner;
 import com.ldealmei.libs.carousel.model.ItemPicker;
+import com.ldealmei.sample.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PickerImageWithDescriptionAndIndicatorActivity extends AppCompatActivity {
+public class PickerImageWithDescriptionActivity extends AppCompatActivity {
 
     private ImageView imgSelected;
     private TextView txtSelected;
@@ -21,9 +22,9 @@ public class PickerImageWithDescriptionAndIndicatorActivity extends AppCompatAct
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pcker_image_with_description_and_indicator);
+        setContentView(R.layout.activity_image_item_with_description);
 
-        getSupportActionBar().setTitle("Image Description Indicator Sample");
+        getSupportActionBar().setTitle("Image Description Sample");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         imgSelected = (ImageView) findViewById(R.id.img_selected);
@@ -42,7 +43,7 @@ public class PickerImageWithDescriptionAndIndicatorActivity extends AppCompatAct
 
         carouselPicker.init(this)
                 .addList(itens)
-                .addCallback(new CallbackPicker(){
+                .addCallback(new PickerListerner(){
                     @Override
                     public void onClickItem(ItemPicker item) {
                         imgSelected.setImageResource(item.imgResID);
@@ -60,6 +61,7 @@ public class PickerImageWithDescriptionAndIndicatorActivity extends AppCompatAct
         txtSelected.setText(itens.get(0).txt);
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

@@ -1,13 +1,13 @@
- package com.ldealmei.sample;
+ package com.ldealmei.sample.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
-
-import com.ldealmei.libs.carousel.callback.CallbackPicker;
 import com.ldealmei.libs.carousel.CarouselPicker;
+import com.ldealmei.libs.carousel.interfaces.PickerListerner;
 import com.ldealmei.libs.carousel.model.ItemPicker;
+import com.ldealmei.sample.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ import java.util.List;
         carouselPicker.init(this)
                 .displayIndicator(true)
                 .addList(itens)
-                .addCallback(new CallbackPicker(){
+                .addCallback(new PickerListerner(){
                     @Override
                     public void onClickItem(ItemPicker item) {
                         imgSelected.setImageResource(item.imgResID);

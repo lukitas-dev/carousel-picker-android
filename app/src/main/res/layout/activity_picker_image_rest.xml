@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context="com.ldealmei.sample.activities.PickerImageWithIndicatorActivity">
+    tools:context="com.ldealmei.sample.activities.PickerImageRestActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -21,8 +21,12 @@
     <com.ldealmei.libs.carousel.CarouselPicker
         android:id="@+id/carousel_picker"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@color/background2"/>
+        android:layout_height="150dp"
+        android:background="@color/background2"
+        app:customDescriptionColor="@color/description_color"
+        app:displayIndicator="true"
+        app:customIndicator="@drawable/ic_indicator"
+        app:customIndicatorColor="@color/indicator_color"/>
 
 
     <LinearLayout

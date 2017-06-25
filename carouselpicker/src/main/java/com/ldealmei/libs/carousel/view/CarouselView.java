@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ldealmei.libs.carousel.R;
-import com.ldealmei.libs.carousel.callback.CallbackPicker;
+import com.ldealmei.libs.carousel.interfaces.PickerListerner;
 import com.ldealmei.libs.carousel.model.ItemPicker;
 
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public abstract class CarouselView extends ViewGroup {
     protected int customDescriptionColor;
     protected List<ItemPicker> itens;
     protected int numberOfItensPerPage = 3;
-    protected CallbackPicker callback;
+    protected PickerListerner callback;
     protected Context context;
 
     public CarouselView(Context context) {

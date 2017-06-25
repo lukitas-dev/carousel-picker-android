@@ -1,6 +1,7 @@
 package com.ldealmei.libs.carousel.builder;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ldealmei.libs.carousel.R;
 import com.ldealmei.libs.carousel.model.ItemPicker;
 import com.ldealmei.libs.carousel.view.CarouselView;
@@ -44,7 +46,13 @@ public class CarouselBuilder extends CarouselView {
             TextView itemText = (TextView) mainLayout.findViewById(R.id.txt_item);
             ImageView indicatorImage = (ImageView) mainLayout.findViewById(R.id.img_indicator);
 
-            itemImage.setImageResource(it.imgResID);
+            if(it.imgUrl != null) {
+                Glide.with(context)
+                     .load(Uri.parse(it.imgUrl))
+                     .into(itemImage);
+            } else {
+                itemImage.setImageResource(it.imgResID);
+            }
 
             if(it.hasDescription) {
                 if (customDescriptionColor != 0) {

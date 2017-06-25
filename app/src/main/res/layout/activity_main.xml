@@ -50,6 +50,14 @@
         android:text="Image Description Indicator Picker"
         android:onClick="open"/>
 
+    <Button
+        android:id="@+id/sample_image_rest_picker"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:text="Image Rest Picker"
+        android:onClick="open"/>
+
 
 
 
