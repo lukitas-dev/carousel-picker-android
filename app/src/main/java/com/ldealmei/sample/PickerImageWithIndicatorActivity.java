@@ -3,11 +3,11 @@
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 
+import com.ldealmei.libs.carousel.callback.CallbackPicker;
 import com.ldealmei.libs.carousel.CarouselPicker;
-import com.ldealmei.libs.carousel.ItemPicker;
+import com.ldealmei.libs.carousel.model.ItemPicker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,24 +36,19 @@ import java.util.List;
 
         final CarouselPicker carouselPicker = (CarouselPicker) findViewById(R.id.carousel_picker);
 
-        carouselPicker
+        carouselPicker.init(this)
                 .displayIndicator(true)
                 .addList(itens)
-                .build(this);
+                .addCallback(new CallbackPicker(){
+                    @Override
+                    public void onClickItem(ItemPicker item) {
+                        imgSelected.setImageResource(item.imgResID);
+                    }
+                })
+                .build();
 
 
         imgSelected.setImageResource(itens.get(0).imgResID);
-
-
-        carouselPicker.addListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ItemPicker item = carouselPicker.getSelectedItem();
-                if(item != null){
-                    imgSelected.setImageResource(item.imgResID);
-                }
-            }
-        });
 
     }
 

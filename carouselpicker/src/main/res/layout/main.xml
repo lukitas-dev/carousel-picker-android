@@ -1,53 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/my_view"
+<HorizontalScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <HorizontalScrollView
-        android:id="@+id/picker_horizontal_scroll"
-        android:scrollbars="none"
+    android:id="@+id/picker_horizontal_scroll"
+    android:scrollbars="none"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <LinearLayout
+        android:id="@+id/picker_linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-        <LinearLayout
-            android:id="@+id/picker_linear_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <!--<LinearLayout-->
-                <!--android:layout_width="150dp"-->
-                <!--android:layout_height="200dp"-->
-                <!--android:padding="20dp"-->
-                <!--android:orientation="vertical">-->
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:orientation="vertical">-->
-                    <!--<ImageView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:src="@drawable/ic_indicator"-->
-                        <!--android:layout_weight="1" />-->
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:background="@android:color/holo_blue_dark"-->
-                        <!--android:layout_weight="1" />-->
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-                   <!---->
-                <!--</LinearLayout>-->
-
-                <!--<ImageView-->
-                    <!--android:id="@+id/imageView"-->
-                    <!--android:layout_width="25dp"-->
-                    <!--android:layout_height="25dp"-->
-                    <!--android:layout_gravity="center_horizontal"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:background="@android:color/darker_gray" />-->
-            <!--</LinearLayout>-->
-           <!---->
-        </LinearLayout>
-    </HorizontalScrollView>
-
-</LinearLayout>
+    </LinearLayout>
+</HorizontalScrollView>

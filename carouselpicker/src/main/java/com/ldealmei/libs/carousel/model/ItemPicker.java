@@ -1,4 +1,4 @@
-package com.ldealmei.libs.carousel;
+package com.ldealmei.libs.carousel.model;
 
 /**
  * Created by Lucas Cruz on 27/05/2017.

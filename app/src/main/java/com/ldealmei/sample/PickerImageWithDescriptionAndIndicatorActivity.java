@@ -3,12 +3,12 @@ package com.ldealmei.sample;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ldealmei.libs.carousel.callback.CallbackPicker;
 import com.ldealmei.libs.carousel.CarouselPicker;
-import com.ldealmei.libs.carousel.ItemPicker;
+import com.ldealmei.libs.carousel.model.ItemPicker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,27 +40,24 @@ public class PickerImageWithDescriptionAndIndicatorActivity extends AppCompatAct
 
         final CarouselPicker carouselPicker = (CarouselPicker) findViewById(R.id.carousel_picker);
 
-        carouselPicker.addList(itens).build(this);
+        carouselPicker.init(this)
+                .addList(itens)
+                .addCallback(new CallbackPicker(){
+                    @Override
+                    public void onClickItem(ItemPicker item) {
+                        imgSelected.setImageResource(item.imgResID);
+                        if(item.txtResID != 0) {
+                            txtSelected.setText(item.txtResID);
+                        } else {
+                            txtSelected.setText(item.txt);
+                        }
+                    }
+                })
+                .build();
 
 
         imgSelected.setImageResource(itens.get(0).imgResID);
         txtSelected.setText(itens.get(0).txt);
-
-
-        carouselPicker.addListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ItemPicker item = carouselPicker.getSelectedItem();
-                if(item != null){
-                    imgSelected.setImageResource(item.imgResID);
-                    if(item.txtResID != 0) {
-                        txtSelected.setText(item.txtResID);
-                    } else {
-                        txtSelected.setText(item.txt);
-                    }
-                }
-            }
-        });
 
     }
     @Override

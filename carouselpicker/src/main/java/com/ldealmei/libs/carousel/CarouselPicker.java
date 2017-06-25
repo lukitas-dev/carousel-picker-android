@@ -3,12 +3,12 @@ package com.ldealmei.libs.carousel;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Point;
-import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Display;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -18,7 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-import java.util.ArrayList;
+import com.ldealmei.libs.carousel.builder.CarouselBuilder;
+import com.ldealmei.libs.carousel.model.ItemPicker;
+import com.ldealmei.libs.carousel.callback.CallbackPicker;
+import com.ldealmei.libs.carousel.view.CarouselView;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,23 +31,7 @@ import java.util.Map;
  * Created by Lucas Cruz on 27/05/2017.
  */
 
-public class CarouselPicker extends ViewGroup {
-
-    private Map<Integer,ImageView> indicatorsMap;
-    private List<CompositeOnClickListener> listeners;
-    private ItemPicker selectedItem;
-    private ImageView indicatorSelected;
-    private HorizontalScrollView pickerScroll;
-    private LinearLayout pickerLayout;
-    private LinearLayout myView;
-    private boolean displayIndicator;
-    private int customIndicator;
-    private int customIndicatorColor;
-    private int customIndicatorSize;
-    private int customDescriptionColor;
-    private List<ItemPicker> itens;
-    private int numberOfItensPerPage = 3;
-
+public class CarouselPicker extends CarouselBuilder {
 
     public CarouselPicker(Context context) {
         super(context);
@@ -51,230 +39,57 @@ public class CarouselPicker extends ViewGroup {
 
     public CarouselPicker(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
-        inflate(getContext(), R.layout.main, this);
-
-        indicatorsMap = new HashMap<>();
-        listeners = new ArrayList<>();
-
-        myView = (LinearLayout) findViewById(R.id.my_view);
-        pickerScroll = (HorizontalScrollView) findViewById(R.id.picker_horizontal_scroll);
-        pickerLayout = (LinearLayout) findViewById(R.id.picker_linear_layout);
-
-        TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CarouselPicker, 0, 0);
-        customIndicator = typedArray.getResourceId(R.styleable.CarouselPicker_customIndicator,0);
-        displayIndicator = typedArray.getBoolean(R.styleable.CarouselPicker_displayIndicator,false);
-        customIndicatorColor = typedArray.getResourceId(R.styleable.CarouselPicker_customIndicatorColor,0);
-        customIndicatorSize = typedArray.getResourceId(R.styleable.CarouselPicker_customIndicatorSize,0);
-        customDescriptionColor = typedArray.getResourceId(R.styleable.CarouselPicker_customDescriptionColor,0);
     }
 
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        final int count = getChildCount();
-        int curWidth, curHeight, curLeft, curTop, maxHeight;
-        int childLeft = this.getPaddingLeft();
-        int childTop = this.getPaddingTop();
-        int childRight = this.getMeasuredWidth() - this.getPaddingRight();
-        int childBottom = this.getMeasuredHeight() - this.getPaddingBottom();
-        int childWidth = childRight - childLeft;
-        int childHeight = childBottom - childTop;
 
-        maxHeight = 0;
-        curLeft = childLeft;
-        curTop = childTop;
-        for (int i = 0; i < count; i++) {
-            View child = getChildAt(i);
-            if (child.getVisibility() != GONE) {
-                //Get the maximum size of the child
-                child.measure(MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.AT_MOST),
-                        MeasureSpec.makeMeasureSpec(childHeight, MeasureSpec.AT_MOST));
-                curWidth = child.getMeasuredWidth();
-                curHeight = child.getMeasuredHeight();
-                //wrap is reach to the end
-                if (curLeft + curWidth >= childRight) {
-                    curLeft = childLeft;
-                    curTop += maxHeight;
-                    maxHeight = 0;
-                }
-                child.layout(curLeft, curTop, curLeft + curWidth, curTop + curHeight);
-                if (maxHeight < curHeight)
-                    maxHeight = curHeight;
-                curLeft += curWidth;
-            }
-        }
+    public CarouselPicker init(@NonNull Context context){
+        this.context = context;
+        return this;
     }
 
-    public CarouselPicker itensByPage(int number){
+    public CarouselPicker itensByPage(@NonNull int number){
         this.numberOfItensPerPage = number;
         return this;
     }
 
-    public CarouselPicker displayIndicator(boolean display){
+    public CarouselPicker displayIndicator(@NonNull boolean display){
         this.displayIndicator = display;
         return this;
     }
 
-    public CarouselPicker customIndicator(int indicatorRes){
+    public CarouselPicker customIndicator(@NonNull int indicatorRes){
         this.customIndicator = indicatorRes;
         return this;
     }
-    public CarouselPicker customIndicatorColor(int colorRes){
+    public CarouselPicker customIndicatorColor(@NonNull int colorRes){
         this.customIndicatorColor = colorRes;
         return this;
     }
 
-    public CarouselPicker customDescriptionColor(int colorRes){
+    public CarouselPicker customDescriptionColor(@NonNull int colorRes){
         this.customDescriptionColor = colorRes;
         return this;
     }
 
-    public CarouselPicker customIndicatorSize(int sizeRes){
+    public CarouselPicker customIndicatorSize(@NonNull int sizeRes){
         this.customIndicatorSize = sizeRes;
         return this;
     }
 
-    public CarouselPicker addList(List<ItemPicker> itens){
+    public CarouselPicker addList(@NonNull List<ItemPicker> itens){
        this.itens = itens;
         return this;
     }
 
-    public void addListener(View.OnClickListener listener){
-        for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).addOnClickListener(listener);
-        }
+    public CarouselPicker addCallback(@NonNull CallbackPicker callback){
+        this.callback = callback;
+        return this;
     }
 
-    public ItemPicker getSelectedItem() {
-        return selectedItem;
+
+    public void build(){
+        super.build();
     }
 
-    public void build(Context context){
-        int x = 0;
-        for (final ItemPicker it : itens) {
-            final int index = x;
-
-            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            Display display = wm.getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            final LinearLayout sll = new LinearLayout(context);
-            LinearLayout.LayoutParams sllParams = new LinearLayout.LayoutParams(size.x/numberOfItensPerPage, getLayoutParams().height);
-            sll.setLayoutParams(sllParams);
-            sll.setPadding(25,0,25,0);
-            sll.setOrientation(LinearLayout.VERTICAL);
-
-            LinearLayout ll = new LinearLayout(context);
-            LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT,1f);
-            ll.setLayoutParams(llParams);
-            ll.setOrientation(LinearLayout.VERTICAL);
-
-            ImageView img = new ImageView(context);
-            int imgHeigth = LinearLayout.LayoutParams.WRAP_CONTENT;
-            if(it.hasDescription || displayIndicator) {
-                imgHeigth = getLayoutParams().height/2;
-            }
-            LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, imgHeigth);
-            imgParams.gravity = Gravity.TOP;
-            imgParams.setMargins(0, 0, 0, 25);
-            img.setLayoutParams(imgParams);
-            img.setAdjustViewBounds(true);
-            img.setImageResource(it.imgResID);
-            ll.addView(img);
-
-            if(it.hasDescription) {
-                TextView txt = new TextView(context);
-                LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                txtParams.gravity = Gravity.TOP;
-                txt.setLayoutParams(txtParams);
-                if (customDescriptionColor != 0) {
-                    txt.setTextColor(ContextCompat.getColor(context, customDescriptionColor));
-                }
-                txt.setTypeface(Typeface.DEFAULT_BOLD);
-                txt.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                if (it.txt == null) {
-                    txt.setText(it.txtResID);
-                } else {
-                    txt.setText(it.txt);
-                }
-                ll.addView(txt);
-            }
-
-            sll.addView(ll);
-
-            if(displayIndicator) {
-                ImageView sel = new ImageView(context);
-                LinearLayout.LayoutParams selParams;
-                if(customIndicatorSize != 0){
-                    selParams = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT,(int)context.getResources().getDimension(customIndicatorSize), 0.5f);
-                } else {
-                    selParams = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT,(int)context.getResources().getDimension(R.dimen.indicator_default_size),0.2f);
-                }
-                selParams.gravity = (Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
-                sel.setLayoutParams(selParams);
-                sel.setScaleType(ImageView.ScaleType.FIT_XY);
-                sel.setAdjustViewBounds(true);
-                if(customIndicator != 0) {
-                    sel.setImageResource(customIndicator);
-                } else {
-                    sel.setImageResource(R.drawable.ic_indicator);
-                }
-                if(customIndicatorColor != 0) {
-                    sel.setColorFilter(ContextCompat.getColor(context, customIndicatorColor));
-                }
-                if(x == 0){
-                    indicatorSelected = sel;
-                } else {
-                    sel.setVisibility(View.GONE);
-                }
-                indicatorsMap.put(x, sel);
-
-                sll.addView(sel);
-            }
-            CompositeOnClickListener groupListener = new CompositeOnClickListener();
-            ll.setOnClickListener(groupListener);
-            groupListener.addOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(displayIndicator) {
-                        if (indicatorSelected != null) {
-                            indicatorSelected.setVisibility(View.GONE);
-                        }
-                        indicatorSelected = indicatorsMap.get(index);
-                        indicatorSelected.setVisibility(View.VISIBLE);
-                    }
-
-                    int scroll = (sll.getLeft() - (myView.getWidth()/ 2)) + (sll.getWidth() / 2);
-                    pickerScroll.smoothScrollTo(scroll,0);
-
-                    selectedItem = it;
-                }
-            });
-
-           listeners.add(groupListener);
-
-            pickerLayout.addView(sll);
-            x++;
-        }
-    }
-
-    private class CompositeOnClickListener implements View.OnClickListener{
-        List<View.OnClickListener> listeners;
-
-        public CompositeOnClickListener(){
-            listeners = new ArrayList<OnClickListener>();
-        }
-
-        public void addOnClickListener(View.OnClickListener listener){
-            listeners.add(listener);
-        }
-
-        @Override
-        public void onClick(View v){
-            for(View.OnClickListener listener : listeners){
-                listener.onClick(v);
-            }
-        }
-    }
 
 }
